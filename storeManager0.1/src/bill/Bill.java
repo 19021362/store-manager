@@ -15,8 +15,22 @@ public class Bill {
     protected String type;
     protected boolean status;
     protected long sum;
-    protected User employee;
+    protected String employee;
     protected ArrayList<Bill_detail> bill_details = new ArrayList<Bill_detail>();
+    protected long profit;
+
+    public Bill() {
+    }
+
+    public Bill(String idBill, Time time, Date date, String type, long sum, String employee) {
+        this.idBill = idBill;
+        this.time = time;
+        this.date = date;
+        this.type = type;
+        this.sum = sum;
+        this.employee = employee;
+        this.status = true;
+    }
 
     public void setIdBill(String idBill) {
         this.idBill = idBill;
@@ -38,7 +52,7 @@ public class Bill {
         this.bill_details = bill_details;
     }
 
-    public void setEmployee(User employee) {
+    public void setEmployee(String employee) {
         this.employee = employee;
     }
 
@@ -69,11 +83,18 @@ public class Bill {
         return sum;
     }
 
+    public long getProfit() {
+        for (Bill_detail i : bill_details) {
+            profit += i.getProfitInLine();
+        }
+        return profit;
+    }
+
     public String getType() {
         return type;
     }
 
-    public User getEmployee() {
+    public String getEmployee() {
         return employee;
     }
 
@@ -83,15 +104,20 @@ public class Bill {
 
     @Override
     public String toString() {
-        return "Bill{" +
-                "idBill='" + idBill + '\'' +
-                ", time=" + time +
+        return  "idBill=" + idBill +
+                "|  time=" + time +
                 ", date=" + date +
-                ", type='" + type + '\'' +
-                ", status=" + status +
-                ", sum=" + sum +
                 ", employee=" + employee +
-                ", bill_details=" + bill_details +
-                '}';
+                ", type='" + type +
+                ", sum=" + sum;
+    }
+
+    public String toSave() {
+        return idBill + "," +
+                time + "," +
+                date + "," +
+                type + "," +
+                sum + "," +
+                employee;
     }
 }
