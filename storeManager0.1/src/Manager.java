@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Manager {
 
@@ -20,7 +21,8 @@ public class Manager {
     private ArrayList<User> users = new ArrayList<User>();
     private User currentUser;
     private ArrayList<Product> products = new ArrayList<Product>();
-    private ArrayList<Bill> bills = new ArrayList<Bill>();
+    private Stack<Bill> bills = new Stack<Bill>();
+    private ArrayList<Bill_detail> allBill_details = new ArrayList<>();
 
     //nạp dữ liệu nhân viên.
     public void loadUser() throws IOException {
@@ -30,6 +32,14 @@ public class Manager {
     //nap du lieu sp.
     public void loadProduct() throws IOException {
         products = Load.loadProduct();
+    }
+
+    public void loadBillDetail() throws IOException {
+        allBill_details = Load.loadBillDetail(products);
+    }
+
+    public void loadBills() throws IOException {
+        bills = Load.loadBills(allBill_details);
     }
 
     public boolean isLogIn(ArrayList<User> users, User user) {
@@ -79,33 +89,34 @@ public class Manager {
         String in = "";
 
         Bill bill = new Bill();
-        bill.setIdBill("1");
-        bill.setEmployee(users.get(0));
+        bill.setIdBill("" + (bills.size()+1));
+        bill.setEmployee(currentUser.getName());
         bill.setType("out");
         bill.setTime(Time.valueOf(LocalTime.now()));
         bill.setDate(Date.valueOf(LocalDate.now()));
         while (!in.equals("end")) {
-            Product product = new Product();
+            boolean isFound = false;
 
             System.out.print("nhập id: ");
             String id = sc.next();
 
             for (Product i : products) {
                 if (i.getId_product().equals(id)) {
-                    product = i;
+                    isFound = true;
+
+                    System.out.print("nhập số lượng: ");
+                    int quantity = sc.nextInt();
+
+                    Bill_detail billDetail = new Bill_detail(bill.getIdBill(), i, quantity);
+
+                    i.updateQuantity(quantity, bill.getType());
+                    bill.addBillDetail(billDetail);
+                    allBill_details.add(billDetail);
                 }
             }
 
-            if (product.getProductName() == null) {
+            if (!isFound) {
                 System.out.println("Không có sp!");
-            } else {
-                Bill_detail billDetail = new Bill_detail();
-                billDetail.setProductInline(product);
-
-                System.out.print("nhập số lượng: ");
-                billDetail.setQuantity(sc.nextInt());
-
-                bill.addBillDetail(billDetail);
             }
             System.out.print("có thêm sp? (con/end): ");
             in = sc.next();
@@ -115,11 +126,28 @@ public class Manager {
     }
 
 
+    public void showHistoryBill() {
+        Scanner scanner = new Scanner(System.in);
+        String in = "";
+        while (!in.equals("no")) {
+            boolean isFound = false;
 
-    //In hóa đơn.
-    public void printBill() {
-        System.out.println(bills.get(bills.size()-1).toString());
+            Display.showHistoryBill(bills);
+            System.out.println("Xem hoa don co id: ");
+            in = scanner.next();
+            for (Bill i : bills) {
+                if (i.getIdBill().equals(in)) {
+                    Display.printBill(i);
+                    isFound = true;
+                }
+            }
+
+            if (!isFound && !in.equals("no")) {
+                System.out.println("khong co hoa don nay!");
+            }
+        }
     }
+
 
 
     public void mainMenu() {
@@ -128,15 +156,26 @@ public class Manager {
         while (!in.equals("8")) {
 
             Display.menu(currentUser.getName());
-
+            System.out.print("Chọn chức năng: ");
             in = scanner.next();
             switch (in) {
                 case "1":
                     newBill();
-                    Display.printBill(bills.get(bills.size()-1));
+                    Display.printBill(bills.peek());
+                    break;
+                case "2":
+                    Display.printStore(products);
+                    break;
+                case "3":
+                    showHistoryBill();
                     break;
                 default:
                     in = "8";
+                    try {
+                        Load.saveData(users, products, bills, allBill_details);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
 
