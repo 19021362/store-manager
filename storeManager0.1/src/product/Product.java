@@ -106,5 +106,25 @@ public class Product extends ProductLine {
         this.discount = discount;
     }
 
+    public void updateQuantity(int changeQuantity, String type) {
+        if (type.equals("out") || type.equals("OUT")) {
+            this.quantity -= changeQuantity;
+        }
+        if (type.equals("in") || type.equals("IN")) {
+            this.quantity += changeQuantity;
+        }
+    }
 
+
+    public String toSave() {
+        return id_product + "," +
+                productName + "," +
+                described + "," +
+                brand + "," +
+                priceIn + "," +
+                priceOut + "," +
+                quantity + "," +
+                discount + "," +
+                productLines;
+    }
 }
