@@ -14,6 +14,8 @@ public class main {
         manager.Login();
         if (manager.statusLog) {
             manager.loadProduct();
+            manager.loadBillDetail();
+            manager.loadBills();
             manager.mainMenu();
         }
 
