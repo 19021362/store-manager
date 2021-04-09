@@ -9,10 +9,10 @@ public class User {
     protected long salary = 0;
 
     public User(String idUser, String username, String password, String name, String jobTitle, long salary) {
-        IdUser = idUser;
-        Username = username;
+        this.IdUser = idUser;
+        this.Username = username;
         this.password = password;
-        Name = name;
+        this.Name = name;
         this.jobTitle = jobTitle;
         this.salary = salary;
     }
@@ -83,6 +83,15 @@ public class User {
                 ", jobTitle='" + jobTitle + '\'' +
                 ", salary=" + salary +
                 '}';
+    }
+
+    public String toSave() {
+        return IdUser + "," +
+                Username + "," +
+                password + "," +
+                Name + "," +
+                jobTitle + "," +
+                salary;
     }
 
 }
