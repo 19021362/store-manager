@@ -15,9 +15,10 @@ public class Display {
         System.out.println("           3. xem lịch sử hóa đơn.             ");
         System.out.println("           4. nhập sản phẩm mới.               ");
         System.out.println("           5. sửa thông tin sản phẩm.          ");
-        System.out.println("           6. sửa thông tin tk.                ");
+        System.out.println("           6. Nhập hàng.                       ");
         System.out.println("           7. lợi nhuận.                       ");
-        System.out.println("           8. thoát                            ");
+        System.out.println("           8. Sửa thông tin tk.                ");
+        System.out.println("           9. thoát.                           ");
         System.out.println("                                               ");
         System.out.println("***********************************************");
     }
