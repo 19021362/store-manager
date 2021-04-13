@@ -125,7 +125,7 @@ public class Manager {
         bills.add(bill);
     }
 
-
+    //xem lich su hoa don.
     public void showHistoryBill() {
         Scanner scanner = new Scanner(System.in);
         String in = "";
@@ -149,7 +149,46 @@ public class Manager {
     }
 
 
+    //them san pham moi.
+    public void addNewProduct() {
+        Scanner scanner = new Scanner(System.in);
+        boolean isFound = false;
+        System.out.print("Nhập ID sản phẩm mới | Id = ");
+        String id = scanner.nextLine();
+        for (Product p : products) {
 
+            if (p.getId_product().equals(id)) {
+                System.out.println("Sản phẩm này đã tồn tại!");
+                isFound = true;
+            }
+        }
+        if (!isFound) {
+            System.out.print("Nhập tên sản phẩm    | Product_Name = ");
+            String name = scanner.nextLine();
+            System.out.print("Nhập mô tả           | Describe = ");
+            String describe = scanner.nextLine();
+            System.out.print("Nhập hãng sản phẩm   | Brand = ");
+            String brand = scanner.nextLine();
+            System.out.print("Nhập giá mua         | PriceIn = ");
+            String priceIn = scanner.nextLine();
+            System.out.print("Nhập giá bán         | PriceOut = ");
+            String priceOut = scanner.nextLine();
+            System.out.print("Nhập số lượng        | Quantity = ");
+            String quantity = scanner.nextLine();
+            System.out.print("Nhập giảm giá        | Discount = ");
+            String discount = scanner.nextLine();
+            System.out.print("Nhập dòng sản phẩm   | Product_Line = ");
+            String productLine = scanner.nextLine();
+
+            products.add(new Product(id, name, describe, brand, Double.parseDouble(priceIn),
+                    Double.parseDouble(priceOut), Integer.parseInt(quantity), Double.parseDouble(discount), productLine));
+
+            System.out.println("Thêm thành công sản phẩm:");
+            System.out.println(products.get(products.size()-1).toSave());
+        }
+    }
+
+    //menu
     public void mainMenu() {
         Scanner scanner = new Scanner(System.in);
         String in = "";
@@ -168,6 +207,9 @@ public class Manager {
                     break;
                 case "3":
                     showHistoryBill();
+                    break;
+                case "4":
+                    addNewProduct();
                     break;
                 default:
                     in = "8";
