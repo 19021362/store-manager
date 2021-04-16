@@ -19,11 +19,10 @@ public class Bill_detail {
         this.quantity = quantity;
     }
 
-    public Bill_detail(String id_bill,String product_name, int quantity) {
+    public Bill_detail(String id_bill, String product_name, double priceOut, double discount, int quantity) {
         this.quantity = quantity;
         this.id_bill = id_bill;
-        this.productInline = new Product();
-        this.productInline.setProductName(product_name);
+        this.productInline = new Product(product_name, priceOut, discount);
     }
     
     
