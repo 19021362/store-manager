@@ -136,10 +136,10 @@ public class Load {
     public static ArrayList<String> newRow(String productName, int quantity, int row) {
         ArrayList<String> objects = new ArrayList<>();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/manage_store", "root", "");
+            
             Statement statement = connection.createStatement();
-            String queryString = "SELECT `product_name`, `priceOut`,`discount` FROM products WHERE `product_name` = " + "'" + productName + "'";
+            String queryString = "SELECT `product_name`, `priceOut`,`discount` FROM products WHERE `product_name` = " 
+                        + "'" + productName + "'" + " OR `id` = " + "'" + productName + "'";
             ResultSet rs = statement.executeQuery(queryString);
             while(rs.next()) {
                 objects.add(row + "");
@@ -149,11 +149,9 @@ public class Load {
                 objects.add(rs.getDouble(3) + "");
                 objects.add((rs.getDouble(2)*quantity*(1-rs.getDouble(3))) + "");
             }
-            connection.close();
+            
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return objects;
@@ -189,8 +187,7 @@ public class Load {
 
     static void saveBill(Bill bill) {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/manage_store", "root", "");
+            
             String query = " insert into bills (id_bill, date, time, type, total, employee_name)"
                 + " values (?, ?, ?, ?, ?, ?)";
             
@@ -204,10 +201,7 @@ public class Load {
 
             // execute the preparedstatement
             preparedStmt.execute();
-      
-            connection.close();                                    
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
+                                       
         } catch (SQLException ex) {
             Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -217,8 +211,7 @@ public class Load {
 
     private static void saveBillDetail(ArrayList<Bill_detail> bill_details) {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/manage_store", "root", "");
+            
             String query1 = " insert into `bill_details` (`bill_id`, `name_product`, `each_quantity`)"
                     + " values (?, ?, ?);" + "\n";  
                     
@@ -245,12 +238,37 @@ public class Load {
                 st.execute();
             }
 
-            connection.close();                                    
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
+                                             
         } catch (SQLException ex) {
             Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public static ArrayList<Product> findProduct(String text) {
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            Statement s = connection.createStatement();
+            String query = " SELECT * FROM `products` WHERE `id` LIKE '%"+text.toUpperCase()+"%' OR `product_name` LIKE '%"+text.toUpperCase()+"%';";
+            ResultSet r = s.executeQuery(query);
+            
+            while (r.next()) {
+                Product product = new Product();
+                product.setId_product(r.getString(1));
+                product.setProductName(r.getString(2));
+                product.setDescribed(r.getString(3));
+                product.setBrand(r.getString(4));
+                product.setPriceIn(r.getDouble(5));
+                product.setPriceOut(r.getDouble(6));
+                product.setQuantity(r.getInt(7));
+                product.setProductLines(r.getString(8));
+                product.setDiscount(r.getDouble(9));
+                
+                products.add(product);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
     }
 
 
