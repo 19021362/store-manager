@@ -39,6 +39,12 @@ public class Product extends ProductLine {
         p.setProductName(product_name);
     }
 
+    public Product(String product_name, double priceOut, double discount) {
+        this.productName = product_name;
+        this.discount = discount;
+        this.priceOut = priceOut;
+    }
+
     public String getId_product() {
         return id_product;
     }
@@ -50,6 +56,7 @@ public class Product extends ProductLine {
     public String getDescribed() {
         return described;
     }
+   
 
     public String getBrand() {
         return brand;
@@ -107,9 +114,15 @@ public class Product extends ProductLine {
         this.quantity = quantity;
     }
 
-    public void setDiscount(float discount) {
+    public void setDiscount(double discount) {
         this.discount = discount;
     }
+
+    public void setProductLines(String productLines) {
+        this.productLines = productLines;
+    }
+    
+    
 
     public void updateQuantity(int changeQuantity, String type) {
         if (type.equals("out") || type.equals("OUT")) {
