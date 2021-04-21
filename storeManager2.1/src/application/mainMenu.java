@@ -34,6 +34,7 @@ public class mainMenu extends javax.swing.JFrame {
     
      public mainMenu() {
           initComponents();
+          
           jLabel1.setText(Manager.currentUser.getName());
           dateLabel.setText(Date.valueOf(LocalDate.now()).toString());
           timeLabel.setText(Time.valueOf(LocalTime.now()).toString());
@@ -141,6 +142,11 @@ public class mainMenu extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton3.setText("Lịch sử");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -417,7 +423,8 @@ public class mainMenu extends javax.swing.JFrame {
             {rowData.get(0), rowData.get(1), rowData.get(2), rowData.get(3), rowData.get(4), rowData.get(5)});
         
             bill_details.add(new Bill_detail(("" + (Manager.bills.size()+1)), 
-                    productName, Double.parseDouble(rowData.get(3)), Double.parseDouble(rowData.get(4)), quantity));
+                    rowData.get(1), Double.parseDouble(rowData.get(3)), 
+                    Double.parseDouble(rowData.get(4)), Integer.parseInt(rowData.get(2))));
         
             double sumInLine = Double.parseDouble(rowData.get(5));
             sumOfBill(sumInLine, true);
@@ -454,6 +461,12 @@ public class mainMenu extends javax.swing.JFrame {
         Store store = new Store();
         store.show(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        HistoryFrame hf = new HistoryFrame();
+        hf.show(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
      /**
       * @param args the command line arguments
