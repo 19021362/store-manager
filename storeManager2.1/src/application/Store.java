@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import product.Product;
@@ -181,11 +182,15 @@ public class Store extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         // TODO add your handling code here
+        NewProduct np = new NewProduct();
+        np.show(true);
 
     }//GEN-LAST:event_createButtonActionPerformed
 
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
         // TODO add your handling code here:
+        ChangeProduct cp = new ChangeProduct();
+        cp.show(true);
         
     }//GEN-LAST:event_changeButtonActionPerformed
 
