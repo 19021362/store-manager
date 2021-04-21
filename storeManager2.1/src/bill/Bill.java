@@ -82,6 +82,7 @@ public class Bill {
     }
 
     public double getSumC() {
+        sum = 0;
         for (Bill_detail i : bill_details) {
             sum += i.getSumInLine();
         }
