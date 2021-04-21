@@ -22,9 +22,9 @@ public class Manager {
     protected static boolean statusLog = false;
     private static ArrayList<User> users = new ArrayList<User>();
     public static  User currentUser;
-    private static ArrayList<Product> products = new ArrayList<Product>();
+    public static ArrayList<Product> products = new ArrayList<Product>();
     public static Stack<Bill> bills = new Stack<Bill>();
-    private static ArrayList<Bill_detail> allBill_details = new ArrayList<>(); 
+    public static ArrayList<Bill_detail> allBill_details = new ArrayList<>(); 
 
     //nạp dữ liệu nhân viên.
     public static void loadUser() throws IOException {
