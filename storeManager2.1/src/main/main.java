@@ -22,6 +22,7 @@ public class main {
         Manager.loadProduct();
         Manager.loadBillDetail();
         Manager.loadBills();
+        
 
 
 
