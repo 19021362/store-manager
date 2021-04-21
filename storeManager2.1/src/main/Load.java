@@ -119,7 +119,7 @@ public class Load {
             while (rs.next()) {
                 Product product = new Product();
                 for(Product p : products) {
-                    if (rs.getString(1).equals(p.getProductName())) {
+                    if (rs.getString(2).equals(p.getProductName())) {
                         product = p;
                     }
                 }
@@ -149,6 +149,7 @@ public class Load {
                 objects.add(rs.getDouble(3) + "");
                 objects.add((rs.getDouble(2)*quantity*(1-rs.getDouble(3))) + "");
             }
+            
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -269,6 +270,50 @@ public class Load {
             Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
         }
         return products;
+    }
+
+    public static void updateProduct(String oldName, String newName, double priceIn, double priceOut, double discount, String describe) {
+        try {
+            String query = " UPDATE `products` SET "
+                    + " `product_name` = '" + newName + "', "
+                    + " `priceIn` = " + priceIn + ", "
+                    + " `priceOut` = " + priceOut + ", "
+                    + " `discount` = " + discount + ", "
+                    + " `des` = '" + describe + "' "
+                    + "WHERE `product_name` = '" + oldName + "' ;" ;
+           
+            PreparedStatement ps = connection.prepareStatement(query);
+            
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void insertNewProduct(Product p) {
+        
+        try {
+            String query = " INSERT INTO `products` "
+                    + " VALUE (?,?,?,?,?,?,?,?,?); ";
+            
+            PreparedStatement ps = connection.prepareStatement(query);
+            
+            ps.setString(1, p.getId_product());
+            ps.setString(2, p.getProductName());
+            ps.setString(3, p.getDescribed());
+            ps.setString(4, p.getBrand());
+            ps.setDouble(5, p.getPriceIn());
+            ps.setDouble(6, p.getPriceOut());
+            ps.setInt(7, p.getQuantity());
+            ps.setString(8, p.getProductLine());
+            ps.setDouble(9, p.getDiscount());
+            
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
 
 
