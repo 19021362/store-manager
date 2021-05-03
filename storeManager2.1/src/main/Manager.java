@@ -20,7 +20,7 @@ import java.util.Vector;
 public class Manager {
 
     protected static boolean statusLog = false;
-    private static ArrayList<User> users = new ArrayList<User>();
+    public static ArrayList<User> users = new ArrayList<User>();
     public static  User currentUser;
     public static ArrayList<Product> products = new ArrayList<Product>();
     public static Stack<Bill> bills = new Stack<Bill>();
