@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 public class mainMenu extends javax.swing.JFrame {
@@ -65,6 +66,8 @@ public class mainMenu extends javax.swing.JFrame {
         newBillButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        reportButton = new javax.swing.JButton();
+        reportButton1 = new javax.swing.JButton();
         pNameTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -148,16 +151,34 @@ public class mainMenu extends javax.swing.JFrame {
             }
         });
 
+        reportButton.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        reportButton.setText("Báo cáo");
+        reportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportButtonActionPerformed(evt);
+            }
+        });
+
+        reportButton1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        reportButton1.setText("Tài khoản");
+        reportButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(newBillButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(reportButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newBillButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(reportButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -166,10 +187,14 @@ public class mainMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(newBillButton, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(325, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(reportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(reportButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pNameTextField.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -254,7 +279,7 @@ public class mainMenu extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel7.setText("Khách đưa");
 
-        givenTextField.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        givenTextField.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         givenTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         givenTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -458,8 +483,12 @@ public class mainMenu extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Store store = new Store();
-        store.show(true);
+        if(Manager.currentUser.getJobTitle().equals("MANAGE")) {
+            Store store = new Store();
+            store.show(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Mục này dành cho quản lí!");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -467,6 +496,23 @@ public class mainMenu extends javax.swing.JFrame {
         HistoryFrame hf = new HistoryFrame();
         hf.show(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void reportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportButtonActionPerformed
+        // TODO add your handling code here:
+                
+        if(Manager.currentUser.getJobTitle().equals("MANAGE")) {
+            ReportFrame rf = new ReportFrame();
+            rf.show(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Mục này dành cho quản lí!");
+        }
+    }//GEN-LAST:event_reportButtonActionPerformed
+
+    private void reportButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportButton1ActionPerformed
+        // TODO add your handling code here:
+        UserFrame uf = new UserFrame();
+        uf.show(true);
+    }//GEN-LAST:event_reportButton1ActionPerformed
 
      /**
       * @param args the command line arguments
@@ -537,6 +583,8 @@ public class mainMenu extends javax.swing.JFrame {
     private javax.swing.JTextField pNameTextField;
     private javax.swing.JButton printButton;
     private javax.swing.JTextField quantityTextField;
+    private javax.swing.JButton reportButton;
+    private javax.swing.JButton reportButton1;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JLabel totalLabel;
     // End of variables declaration//GEN-END:variables
