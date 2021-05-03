@@ -2,6 +2,7 @@ package main;
 
 import bill.Bill;
 import bill.Bill_detail;
+import bill.Report;
 import product.Product;
 import user.User;
 
@@ -18,6 +19,7 @@ import java.sql.*;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class Load {
 
@@ -85,7 +87,7 @@ public class Load {
         Stack<Bill> bills = new Stack<>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet rs =  statement.executeQuery("SELECT * FROM bills");
+            ResultSet rs =  statement.executeQuery("SELECT * FROM bills ORDER BY `bills`.`date` DESC;");
 
             while (rs.next()) {
                 Bill bill = new Bill(rs.getString(1), rs.getDate(2), rs.getTime(3),
@@ -114,7 +116,7 @@ public class Load {
         ArrayList<Bill_detail> bill_details = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet rs =  statement.executeQuery("SELECT * FROM bill_details");
+            ResultSet rs =  statement.executeQuery("SELECT * FROM bill_details;");
 
             while (rs.next()) {
                 Product product = new Product();
@@ -289,6 +291,24 @@ public class Load {
             Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void updateUser(String oldUserName, String name, String pass, String job, long salary) {
+        try {
+            String query = " UPDATE `users` SET "
+                    + " `password` = '" + pass + "', "
+                    + " `name` = '" + name.toUpperCase() + "', "
+                    + " `titleJob` = '" + job.toUpperCase() + "', "
+                    + " `salary` = " + salary + " "
+                    + "WHERE `username` = '" + oldUserName + "' ;" ;
+           
+            PreparedStatement ps = connection.prepareStatement(query);
+            
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 
     public static void insertNewProduct(Product p) {
         
@@ -315,6 +335,53 @@ public class Load {
         
         
     }
+    
+    public static void insertUser(User u) {
+        try {
+            String query = " INSERT INTO `users` "
+                    + " VALUE (?,?,?,?,?,?); ";
+            
+            PreparedStatement ps = connection.prepareStatement(query);
+            
+            ps.setString(1, u.getIdUser());
+            ps.setString(2, u.getUsername());
+            ps.setString(3, u.getPassword());
+            ps.setString(4, u.getName().toUpperCase());
+            ps.setString(5, u.getJobTitle());
+            ps.setLong(6, u.getSalary());
+            
+            
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+
+    public static ArrayList<Report> getReport(int selectString) {
+        ArrayList<Report> reporList = new ArrayList<>();
+        
+        try {
+            Statement s = connection.createStatement();
+            String query = 
+            
+            
+            "SELECT b.date, SUM(b.total) total, SUM(bd.each_quantity*(p.priceOut - p.priceIn)) profit FROM bill_details bd JOIN products p ON bd.name_product = p.product_name JOIN bills b ON b.id_bill = bd.bill_id WHERE MONTH(b.date) IN (SELECT MONTH(MAX(bills.date)) month FROM bills) AND YEAR(b.date) IN (SELECT YEAR(MAX(b.date)) year FROM bills) GROUP BY b.date ORDER BY b.date DESC;" ;
+           
+            ResultSet r = s.executeQuery(query);
+            
+            while(r.next()) {
+                System.err.println(r.getDate(1) + ", " + r.getInt(2) + ", " + r.getInt(3));
+                reporList.add(new Report(r.getDate(1), r.getInt(2), r.getInt(3)));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Load.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return reporList;
+    }
+
+    
 
 
 
